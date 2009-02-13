@@ -1,0 +1,22 @@
+exceptional4j 
+
+Current Version
+===============
+0.0.1-SNAPSHOT
+
+Brief
+=====
+This Java library is a small client API to the getexceptional.com exception-handling service. You can embed this library in your code and broadcast any exceptions that occur within your code back to getexceptional.com.
+
+Build Requirements 
+==================
+Java 5.0
+Maven 2
+
+
+Usage Requirements
+==================
+Java 5.0
+Jakarta Commons HttpClient 3.1 - http://hc.apache.org/httpclient-3.x/
+google-gson 1.3b2 - http://code.google.com/p/google-gson/
+
