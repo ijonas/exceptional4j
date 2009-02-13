@@ -1,7 +1,7 @@
 package com.ijonas.exceptional4j;
 
+import com.google.gson.*;
 import java.util.*;
-import java.text.SimpleDateFormat;
 
 public class ExceptionData {
 	
@@ -14,7 +14,16 @@ public class ExceptionData {
 		environment = new HashMap<String, String>();
 		environment.putAll(System.getenv());
 		
-		occured_at = convertToExceptionalDateFormat(new Date());		
+		occured_at = new Date();		
+	}
+	
+	public ExceptionData(Throwable t) {
+		this();
+		exception_class = t.getClass().getName();
+		exception_message = t.getMessage();			
+		for (StackTraceElement ste : t.getStackTrace()) {
+			exception_backtrace.add(ste.toString());
+		}		
 	}
 	
 	// required data
@@ -24,7 +33,7 @@ public class ExceptionData {
 	private List<String> exception_backtrace;
 	
 	// optional data
-	private String occured_at;
+	private Date occured_at;
 	private String framework;
 	private String controller_name;
 	private String action_name;
@@ -33,6 +42,10 @@ public class ExceptionData {
 	private Map<String, String> parameters;
 	private Map<String, String> session;
 	private Map<String, String> environment;
+	
+	public Map<String, String> getParameters() { return parameters; }
+	public Map<String, String> getSession() { return session; }
+	public Map<String, String> getEnvironment() { return environment; }
 	
 	public String getLanguage() { return language; }
 	public void setLanguage(String val) { language = val; }
@@ -46,8 +59,8 @@ public class ExceptionData {
 	public List<String> getException_backtrace() { return exception_backtrace; }
 	public void setException_backtrace(List<String> val) { exception_backtrace = val; }
 	
-	public String getOccured_at() { return occured_at; }
-	public void setOccured_at(Date val) { occured_at = convertToExceptionalDateFormat(val); }
+	public Date getOccured_at() { return occured_at; }
+	public void setOccured_at(Date val) { occured_at = val; }
 	
 	public String getFramework() { return framework; }
 	public void setFramework(String val) { framework = val; }
@@ -64,8 +77,8 @@ public class ExceptionData {
 	public String getUrl() { return url; }
 	public void setUrl(String val) { url = val; }
 	
-	public String convertToExceptionalDateFormat(Date aDate) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss z");
-		return sdf.format(aDate);		
+	public String serialiseToJson() {
+		Gson gson = new GsonBuilder().setDateFormat("yyyyMMdd HH:mm:ss z").create();
+		return gson.toJson(this);			
 	}
 }
